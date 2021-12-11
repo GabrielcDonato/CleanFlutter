@@ -1,3 +1,4 @@
+import 'package:clean_architecture_experts_club/core/error/failure.dart';
 import 'package:clean_architecture_experts_club/features/auth/domain/entities/user.dart';
 import 'package:clean_architecture_experts_club/features/auth/domain/repositories/do_login_repository.dart';
 import 'package:clean_architecture_experts_club/features/auth/domain/usecases/do_login.dart';
@@ -13,7 +14,7 @@ void main() {
   DoLogin _doLogin = DoLogin(_doLoginRepository);
 
   test(
-    'deve realizar login',
+    'Deve realizar login',
     () async {
       when(() => _doLoginRepository.doLogin(
             email: 'email@email.com',
@@ -28,6 +29,40 @@ void main() {
       );
 
       expect(result, isA<Right>());
+      expect(result, Right(tUser));
+      verify(
+        () => _doLoginRepository.doLogin(
+          email: 'email@email.com',
+          password: '123456',
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(_doLoginRepository);
+    },
+  );
+  test(
+    'Deve obter um erro de senha errada ao realizar o login',
+    () async {
+      when(() => _doLoginRepository.doLogin(
+            email: 'email@email.com',
+            password: '123456',
+          )).thenAnswer((_) async => Left(PasswordWrongFailure()));
+
+      var result = await _doLogin(
+        DoLoginParams(
+          email: 'email@email.com',
+          password: '123456',
+        ),
+      );
+
+      expect(result, isA<Left>());
+      expect(result, Left(PasswordWrongFailure()));
+      verify(
+        () => _doLoginRepository.doLogin(
+          email: 'email@email.com',
+          password: '123456',
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(_doLoginRepository);
     },
   );
 }
