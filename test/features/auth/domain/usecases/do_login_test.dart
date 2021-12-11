@@ -3,7 +3,7 @@ import 'package:clean_architecture_experts_club/features/auth/domain/repositorie
 import 'package:clean_architecture_experts_club/features/auth/domain/usecases/do_login.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class DoLoginRepositoryMock extends Mock implements DoLoginRepository {}
 
@@ -15,10 +15,10 @@ void main() {
   test(
     'deve realizar login',
     () async {
-      when(_doLoginRepository.doLogin(
-        email: 'email@email.com',
-        password: '123456',
-      )).thenAnswer((_) async => Right(tUser));
+      when(() => _doLoginRepository.doLogin(
+            email: 'email@email.com',
+            password: '123456',
+          )).thenAnswer((_) async => Right(tUser));
 
       var result = await _doLogin(
         DoLoginParams(
@@ -27,7 +27,7 @@ void main() {
         ),
       );
 
-      expect(result, tUser);
+      expect(result, isA<Right>());
     },
   );
 }
