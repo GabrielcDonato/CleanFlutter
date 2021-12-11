@@ -7,7 +7,7 @@ class Failure extends Equatable {
   Failure({this.message});
 
   @override
-  List<Object> get props => throw UnimplementedError();
+  List<dynamic> get props => [message];
 }
 
 class ServerFailure extends Failure {
