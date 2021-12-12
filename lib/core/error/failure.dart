@@ -1,7 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class Failure extends Equatable {
+class Failure extends Equatable implements Exception {
   final String? message;
 
   Failure({this.message});
