@@ -1,6 +1,6 @@
+import 'package:clean_architecture_experts_club/core/error/failure.dart';
 import 'package:clean_architecture_experts_club/features/auth/data/datasources/do_login_data_source.dart';
 import 'package:clean_architecture_experts_club/features/auth/domain/entities/user.dart';
-import 'package:clean_architecture_experts_club/core/error/failure.dart';
 import 'package:clean_architecture_experts_club/features/auth/domain/repositories/do_login_repository.dart';
 import 'package:dartz/dartz.dart';
 

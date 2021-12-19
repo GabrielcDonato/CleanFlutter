@@ -11,12 +11,13 @@ class Failure extends Equatable implements Exception {
 
 class ServerFailure extends Failure {
   @override
-  String get message => 'Não foi possivel processar seu pedido, tente novamente mais tarde.';
+  String get message =>
+      'Não foi possível processar seu pedido, tente novamente mais tarde.';
 }
 
 class NotFoundFailure extends Failure {
   @override
-  String get message => 'Registro não encontrado.';
+  String get message => 'Registro não encontrato.';
 }
 
 class PasswordWrongFailure extends Failure {

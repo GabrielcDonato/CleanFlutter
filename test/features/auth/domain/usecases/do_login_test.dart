@@ -13,63 +13,55 @@ void main() {
 
   DoLogin _doLogin = DoLogin(_doLoginRepository);
 
-  test(
-    'Deve realizar login',
-    () async {
-      when(() => _doLoginRepository.doLogin(
-            email: 'email@email.com',
-            password: '123456',
-          )).thenAnswer((_) async => Right(tUser));
-
-      var result = await _doLogin(
-        DoLoginParams(
+  test('Deve realizar o login', () async {
+    when(() => _doLoginRepository.doLogin(
           email: 'email@email.com',
           password: '123456',
-        ),
-      );
+        )).thenAnswer((_) async => Right(tUser));
 
-      expect(result, isA<Right>());
-      expect(result, Right(tUser));
-      verify(
-        () => _doLoginRepository.doLogin(
+    var result = await _doLogin(
+      DoLoginParams(
+        email: 'email@email.com',
+        password: '123456',
+      ),
+    );
+
+    expect(result, isA<Right>());
+    expect(result, Right(tUser));
+
+    verify(
+      () => _doLoginRepository.doLogin(
+        email: 'email@email.com',
+        password: '123456',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(_doLoginRepository);
+  });
+
+  test('Deve obter um erro de senha errada ao realizar o login', () async {
+    when(() => _doLoginRepository.doLogin(
           email: 'email@email.com',
           password: '123456',
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(_doLoginRepository);
-    },
-  );
-  test(
-    'Deve obter um erro de senha errada ao realizar o login',
-    () async {
-      when(() => _doLoginRepository.doLogin(
-            email: 'email@email.com',
-            password: '123456',
-          )).thenAnswer((_) async => Left(PasswordWrongFailure()));
+        )).thenAnswer((_) async => Left(PasswordWrongFailure()));
 
-      var result = await _doLogin(
-        DoLoginParams(
-          email: 'email@email.com',
-          password: '123456',
-        ),
-      );
+    var result = await _doLogin(
+      DoLoginParams(
+        email: 'email@email.com',
+        password: '123456',
+      ),
+    );
 
-      expect(result, isA<Left>());
-      expect(result, Left(PasswordWrongFailure()));
-      verify(
-        () => _doLoginRepository.doLogin(
-          email: 'email@email.com',
-          password: '123456',
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(_doLoginRepository);
-    },
-  );
+    expect(result, isA<Left>());
+    expect(result, Left(PasswordWrongFailure()));
+
+    verify(
+      () => _doLoginRepository.doLogin(
+        email: 'email@email.com',
+        password: '123456',
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(_doLoginRepository);
+  });
 }
 
-var tUser = User(
-  bornDate: DateTime.now(),
-  email: 'email@email.com',
-  name: 'Nome Usuário',
-  pictureUrl: 'https://pictureuser.com.br/photo',
-);
+var tUser = User(bornDate: DateTime.now(), email: 'email@email.com', name: 'Nome Usuário', pictureUrl: 'https://pictureuser.com.br/photo');
